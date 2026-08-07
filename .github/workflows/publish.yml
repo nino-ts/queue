@@ -1,0 +1,39 @@
+name: Publish package on registry
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # Required for npm Trusted Publishing (OIDC) — no registry secrets.
+  id-token: write
+  packages: write
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # CI-only: enables npm Trusted Publishing / OIDC.
+      # Product support matrix remains Bun-only; this does not reintroduce Node as a runtime.
+      - name: Set up Node (npm OIDC helper)
+        uses: actions/setup-node@v6
+        with:
+          node-version: "lts/*"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@ninots"
+
+      - name: Publish to npm (skip if version exists)
+        run: |
+          NAME="$(node -p "require('./package.json').name")"
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "npm already has ${NAME}@${VERSION} — skipping publish"
+          else
+            npm publish --access public --provenance
+          fi
