@@ -23,13 +23,16 @@ bun add @ninots/queue@^0.1.0
 
 ## Trusted Publishing (npm)
 
-1. On [npmjs.com](https://www.npmjs.com): package `@ninots/queue` → **Trusted Publisher** → GitHub Actions  
-   - Org/user: `nino-ts`  
-   - Repo: `queue`  
-   - Workflow: `publish.yml`  
-2. No long-lived `NPM_TOKEN` / `NPM_CONFIG_TOKEN` in CI.  
-3. First publish: create a GitHub Release **or** run `workflow_dispatch` after the publisher is linked.  
-4. Workflow skips if `@ninots/queue@0.1.0` already exists on npm.
+See **[`TRUSTED_PUBLISHER.md`](./TRUSTED_PUBLISHER.md)** for the exact CEO checklist.
+
+| Field | Value |
+|-------|--------|
+| Package | `@ninots/queue` |
+| GitHub | `nino-ts/queue` |
+| Workflow | `publish.yml` |
+
+- No long-lived `NPM_TOKEN` in CI (`id-token: write` OIDC only).
+- **First publish:** package must exist on npm **or** Trusted Publisher must be linked first — otherwise Actions fail with `404 PUT` (see run [31227895104](https://github.com/nino-ts/queue/actions/runs/31227895104)). Prefer one-time `bun publish` (S18 pattern), then link TP, then `workflow_dispatch` (skip-if-exists = PASS).
 
 ## Version
 
