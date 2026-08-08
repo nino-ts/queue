@@ -22,6 +22,9 @@ tsconfig.tsbuildinfo
 node_modules/
 .DS_Store
 docs/
+docs/ops/
+TRUSTED_PUBLISHER.md
+**/TRUSTED_PUBLISHER.md
 *.md
 !README.md
 !LICENSE
