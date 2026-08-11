@@ -17,9 +17,7 @@ import type { QueueRedisClient } from "./types";
  */
 export function createDefaultRedisClient(url?: string): QueueRedisClient {
     const client =
-        url !== undefined
-            ? new RedisClient(url)
-            : ((Bun.redis as RedisClient | undefined) ?? new RedisClient());
+        url !== undefined ? new RedisClient(url) : ((Bun.redis as RedisClient | undefined) ?? new RedisClient());
 
     return wrapRedisClient(client);
 }

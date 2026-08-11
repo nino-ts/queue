@@ -1,10 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import {
-    isJobPayload,
-    isQueueableJob,
-    resolveJobQueueName,
-    toJobPayload,
-} from "../../src/serialize";
+import { isJobPayload, isQueueableJob, resolveJobQueueName, toJobPayload } from "../../src/serialize";
 import type { Job, QueueableJob, ShouldQueue } from "../../src/types";
 
 class PlainJob implements Job {

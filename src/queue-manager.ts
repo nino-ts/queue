@@ -6,13 +6,7 @@
 
 import { RedisQueue } from "./redis-queue";
 import { SyncQueue } from "./sync-queue";
-import type {
-    Job,
-    JobPayload,
-    Queue,
-    QueueConnectionConfig,
-    QueueManagerConfig,
-} from "./types";
+import type { Job, JobPayload, Queue, QueueConnectionConfig, QueueManagerConfig } from "./types";
 
 /**
  * Resolves queue connections from config and dispatches jobs.
@@ -64,11 +58,7 @@ export class QueueManager {
     /**
      * Delay a job on the given (or default) connection.
      */
-    public async later(
-        delaySeconds: number,
-        job: Job | JobPayload,
-        connectionName?: string,
-    ): Promise<void> {
+    public async later(delaySeconds: number, job: Job | JobPayload, connectionName?: string): Promise<void> {
         await this.connection(connectionName).later(delaySeconds, job);
     }
 
