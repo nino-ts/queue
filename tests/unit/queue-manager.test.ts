@@ -56,8 +56,6 @@ describe("QueueManager", () => {
             connections: { sync: { driver: "sync" } },
         });
 
-        expect(() => manager.connection("missing")).toThrow(
-            "Queue connection [missing] is not configured",
-        );
+        expect(() => manager.connection("missing")).toThrow("Queue connection [missing] is not configured");
     });
 });

@@ -21,11 +21,7 @@ export class SyncQueue implements Queue {
         await job.handle();
     }
 
-    public async later(
-        delaySeconds: number,
-        job: Job | JobPayload,
-        queueName?: string,
-    ): Promise<void> {
+    public async later(delaySeconds: number, job: Job | JobPayload, queueName?: string): Promise<void> {
         void delaySeconds;
         await this.push(job, queueName);
     }

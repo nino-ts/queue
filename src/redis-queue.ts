@@ -6,12 +6,7 @@
  * @packageDocumentation
  */
 
-import {
-    decodeJobPayload,
-    encodeJobPayload,
-    resolveJobQueueName,
-    toJobPayload,
-} from "./serialize";
+import { decodeJobPayload, encodeJobPayload, resolveJobQueueName, toJobPayload } from "./serialize";
 import type { Job, JobPayload, Queue, QueueRedisClient } from "./types";
 
 export interface RedisQueueOptions {
@@ -49,11 +44,7 @@ export class RedisQueue implements Queue {
         await this.client.lpush(this.readyKey(name), encodeJobPayload(payload));
     }
 
-    public async later(
-        delaySeconds: number,
-        job: Job | JobPayload,
-        queueName?: string,
-    ): Promise<void> {
+    public async later(delaySeconds: number, job: Job | JobPayload, queueName?: string): Promise<void> {
         const name = resolveJobQueueName(job, queueName) ?? this.defaultQueue;
         const delayMs = Math.max(0, delaySeconds) * 1000;
         const payload = toJobPayload(job);
@@ -73,9 +64,7 @@ export class RedisQueue implements Queue {
         await this.migrateDue(name);
 
         const raw =
-            this.blockTimeoutSeconds > 0
-                ? await this.blockingPop(name)
-                : await this.client.rpop(this.readyKey(name));
+            this.blockTimeoutSeconds > 0 ? await this.blockingPop(name) : await this.client.rpop(this.readyKey(name));
 
         if (raw === null) {
             return null;
@@ -111,10 +100,7 @@ export class RedisQueue implements Queue {
     }
 
     private async blockingPop(queueName: string): Promise<string | null> {
-        const result = await this.client.brpop(
-            this.readyKey(queueName),
-            this.blockTimeoutSeconds,
-        );
+        const result = await this.client.brpop(this.readyKey(queueName), this.blockTimeoutSeconds);
         if (result === null) {
             return null;
         }

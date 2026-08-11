@@ -51,9 +51,7 @@ export function toJobPayload(job: Job | JobPayload): JobPayload {
         return { name: job.jobName, data: job.toData() };
     }
 
-    throw new Error(
-        "RedisQueue requires a QueueableJob (jobName + toData) or a JobPayload { name, data }",
-    );
+    throw new Error("RedisQueue requires a QueueableJob (jobName + toData) or a JobPayload { name, data }");
 }
 
 /**
@@ -82,12 +80,7 @@ export function encodeJobPayload(payload: JobPayload): string {
  */
 export function decodeJobPayload(raw: string): JobPayload {
     const parsed: unknown = JSON.parse(raw);
-    if (
-        typeof parsed !== "object" ||
-        parsed === null ||
-        !("name" in parsed) ||
-        !("data" in parsed)
-    ) {
+    if (typeof parsed !== "object" || parsed === null || !("name" in parsed) || !("data" in parsed)) {
         throw new Error("Invalid job payload on Redis queue");
     }
 
@@ -95,11 +88,7 @@ export function decodeJobPayload(raw: string): JobPayload {
     if (typeof record.name !== "string") {
         throw new Error("Invalid job payload name on Redis queue");
     }
-    if (
-        typeof record.data !== "object" ||
-        record.data === null ||
-        Array.isArray(record.data)
-    ) {
+    if (typeof record.data !== "object" || record.data === null || Array.isArray(record.data)) {
         throw new Error("Invalid job payload data on Redis queue");
     }
 

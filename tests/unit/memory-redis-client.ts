@@ -55,11 +55,7 @@ export class MemoryQueueRedisClient implements QueueRedisClient {
         return existed ? 0 : 1;
     }
 
-    public async zrangebyscore(
-        key: string,
-        min: number | string,
-        max: number | string,
-    ): Promise<string[]> {
+    public async zrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]> {
         const set = this.zsets.get(key);
         if (set === undefined) {
             return [];

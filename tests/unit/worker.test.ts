@@ -36,7 +36,7 @@ class FailJob implements QueueableJob {
 
 function registry(): JobRegistry {
     return new JobRegistry()
-        .register("WorkJob", (data) => new WorkJob(Number(data["n"])))
+        .register("WorkJob", (data) => new WorkJob(Number(data.n)))
         .register("FailJob", () => new FailJob());
 }
 
@@ -71,9 +71,7 @@ describe("Worker", () => {
             once: true,
             sleepMs: 1,
             onError: (error, payload) => {
-                errors.push(
-                    `${payload.name}:${error instanceof Error ? error.message : "unknown"}`,
-                );
+                errors.push(`${payload.name}:${error instanceof Error ? error.message : "unknown"}`);
             },
         });
 
